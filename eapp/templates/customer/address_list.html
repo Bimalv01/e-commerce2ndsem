@@ -1,0 +1,49 @@
+{% extends "base2.html" %}
+
+{% block content %}
+
+<div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px;">
+    <h2 style="text-align: center;">Address List</h2>
+    <!-- Card for adding a new address -->
+    <div style="background-color: #f5f5f5; border-radius: 5px; margin: 120px 0; padding: 15px;">
+        <h3>Add New Address</h3>
+        <p>Click below to add a new address:</p>
+        <a href="{% url 'address_create' %}" style="background-color: #007bff; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Add Address</a>
+        <a href="{% url 'checkout' %}" style="background-color: #007bff; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Back to check out</a>
+    </div>
+    <!-- Table for displaying addresses -->
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr style="background-color: #f5f5f5;">
+                <th style="padding: 10px; border-bottom: 1px solid #ddd;">Recipient Name</th>
+                <th style="padding: 10px; border-bottom: 1px solid #ddd;">Contact</th>
+                <th style="padding: 10px; border-bottom: 1px solid #ddd;">Address Line 1</th>
+                <th style="padding: 10px; border-bottom: 1px solid #ddd;">City, State - Postal Code</th>
+                <th style="padding: 10px; border-bottom: 1px solid #ddd;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if request.user.customer.address_set.all %}
+            {% for address in request.user.customer.address_set.all %}
+            <tr style="border-bottom: 1px solid #ddd;">
+                <td style="padding: 10px;">{{ address.recepient_name }}</td>
+                <td style="padding: 10px;">{{ address.recepient_contact }}</td>
+                <td style="padding: 10px;">{{ address.address_line1 }}</td>
+                <td style="padding: 10px;">{{ address.city }}, {{ address.state }} - {{ address.postal_code }}</td>
+                <td style="padding: 10px;">
+                    <a href="{% url 'address_edit' address.id %}" style="background-color: #17a2b8; color: #fff; padding: 8px 15px; text-decoration: none; border-radius: 5px; margin-right: 5px;">Edit</a>
+                    <a href="{% url 'address_delete' address.id %}" style="background-color: #dc3545; color: #fff; padding: 8px 15px; text-decoration: none; border-radius: 5px;">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+            {% else %}
+            <tr>
+                <td colspan="5" style="text-align: center; padding: 10px;">No addresses found.</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+{% load static %}
+
+<style>
+    .main-menu a {
+    color: black !important;
+}
+
+.container {
+    padding: 30px;
+    margin-top: 150px;
+    background-color: #ffffff;
+}
+.btn {
+    background-color: #0026ff;
+}
+
+</style>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <h2 class="text-center">Register Here</h2>
+                <form method="post" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" class="form-control" id="full-name" name="full-name" placeholder="Full Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <input type="tel" class="form-control" id="phone-number" name="phone-number" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <label for="your-email">Email</label>
+                        <input type="email" class="form-control" id="your-email" name="your-email" placeholder="Email">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                        <input type="checkbox" onclick="togglePasswordVisibility('password')"> Show Password
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password" name="confirm-password" placeholder="Confirm Password">
+                        <input type="checkbox" onclick="togglePasswordVisibility('confirm-password')"> Show Password
+                    </div>
+                    <button type="submit" class="btn btn-outline-danger">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePasswordVisibility(id) {
+            var x = document.getElementById(id);
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+
+        function validateForm() {
+            // Validate Full Name
+            var fullName = document.getElementById("full-name").value;
+            var fullNameRegex = /^[a-zA-Z\s]{1,20}$/;
+            if (!fullNameRegex.test(fullName)) {
+                alert("Full Name must contain only alphabets, spaces, and be up to 20 characters long.");
+                return false;
+            }
+
+            // Validate Phone Number
+            var phoneNumber = document.getElementById("phone-number").value;
+            var phoneRegex = /^\d{10}$/;
+            if (!phoneRegex.test(phoneNumber)) {
+                alert("Phone Number must contain exactly 10 digits and no special characters or letters.");
+                return false;
+            }
+
+            // Validate Password
+            var password = document.getElementById("password").value;
+            var confirmPassword = document.getElementById("confirm-password").value;
+            var passwordRegex = /^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,12}$/;
+            if (!passwordRegex.test(password)) {
+                alert("Password must be 8 to 12 characters long and include at least one special character.");
+                return false;
+            }
+
+            // Confirm Password Match
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+{% endblock %}

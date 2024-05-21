@@ -1,0 +1,85 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+{% load static %}
+
+<br>
+<br>
+<br>
+
+<section class="checkout-area">
+    <div class="container" style="background-color: #ffffff; border-radius: 8px; box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1); padding: 40px; margin-top: 50px;">
+        <form method="post" id="checkout-form">
+            {% csrf_token %}
+            <input type="hidden" name="address_id" id="address-id">
+            <div class="row">
+                <!-- Billing Details -->
+                <div class="col-lg-6">
+                    <h3 style="color: #333333; margin-bottom: 20px;">Billing Details</h3>
+                    <div class="address-list">
+                        {% for address in addresses %}
+                            <div class="address-card" style="border: 1px solid #e0e0e0; border-radius: 8px; padding: 20px; margin-bottom: 20px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0px 0px 20px rgba(0, 0, 0, 0.1)';" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='0px 0px 0px rgba(0, 0, 0, 0)';">
+                                <p style="margin: 0; font-size: 16px; color: #555555;">{{ address }}</p>
+                                <div class="address-actions" style="margin-top: 15px;">
+                                    <a href="{% url 'address_edit' address.id %}" style="background-color: #007bff; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cu₹
+or: pointer;">Edit Address</a>
+                                    <button type="button" onclick="selectAddress({{ address.id }})" style="background-color: #007bff; color: #fff; border: none; padding: 5px 10px; border-radius: 5px; cu₹
+or: pointer;">Select</button>
+                                </div>                                
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="button" onclick="window.location.href='{% url 'address_create' %}'" class="btn mt-3" style="padding: 12px 24px; border: none; border-radius: 4px; background-color: #007bff; color: #ffffff; font-size: 16px; cu₹
+or: pointer; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';">Add New Address</button>
+                </div>
+                
+                <!-- Your Order -->
+                <div class="col-lg-6">
+                    <h3 style="color: #333333; margin-bottom: 20px;">Your Order</h3>
+                    <div class="your-order-table table-responsive">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr>
+                                    <th style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; background-color: #f5f5f5; color: #333333;">Product</th>
+                                    <th style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0; background-color: #f5f5f5; color: #333333;">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in cart_items %}
+                                    <tr>
+                                        <td style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0;">{{ item.product.name }} <strong>× {{ item.quantity }}</strong></td>
+                                        <td style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0;">₹
+{{ item.sub_total }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0;">Order Total</th>
+                                    <td style="padding: 15px; text-align: left; border-bottom: 1px solid #e0e0e0;"><strong>₹
+{{ total_price }}</strong></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="order-button-payment mt-4">
+                        {% if total_price > 0 %}
+                            <button type="submit" class="btn" style="padding: 12px 24px; border: none; border-radius: 4px; background-color: #007bff; color: #ffffff; font-size: 16px; cu₹
+or: pointer; transition: background-color 0.3s ease;" onmouseover="this.style.backgroundColor='#0056b3';" onmouseout="this.style.backgroundColor='#007bff';" onclick="placeOrder()">Place Order</button>
+                        {% else %}
+                            <p>Your order has been successfully placed.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    function selectAddress(addressId) {
+        const addressIdInput = document.getElementById('address-id');
+        addressIdInput.value = addressId;
+    }
+</script>
+{% endblock %}

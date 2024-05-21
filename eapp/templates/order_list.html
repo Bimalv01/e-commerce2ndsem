@@ -1,0 +1,64 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+<div class="container" style="max-width: 800px; margin: 150px auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+        <thead>
+            <tr>
+               
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Order ID</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Order Status</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Order Date</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Order Total</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Image</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Name</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Quantity</th>
+                <th style="padding: 15px; text-align: left; background-color: #f5f5f5;">Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            {% for item in order.orderitem_set.all %}
+            <tr>
+                <td rowspan="{{ order.orderitem_set.count }}" style="padding: 15px; text-align: left; background-color: #f5f5f5;">{{ order.id }}</td>
+                {% if forloop.first %}
+                <td rowspan="{{ order.orderitem_set.count }}" style="padding: 15px; text-align: left; background-color: #f5f5f5;">
+                    {% if order.is_cancelled %}
+                        Cancelled
+                    {% else %}
+                        {{ order.status }}
+                    {% endif %}
+                </td>
+               
+                <td rowspan="{{ order.orderitem_set.count }}" style="padding: 15px; text-align: left; background-color: #f5f5f5;">{{ order.order_date }}</td>
+                <td rowspan="{{ order.orderitem_set.count }}" style="padding: 15px; text-align: left; background-color: #f5f5f5;">₹{{ order.total_price }}</td>
+                {% endif %}
+                <td style="padding: 15px; text-align: left; border-bottom: 1px solid #dddddd;"><a href="{% url 'product_detail' item.product.id %}"><img src="{{ item.product.image_1.url }}" width="50" alt="{{ item.product.name }}"></a></td>
+                <td style="padding: 15px; text-align: left; border-bottom: 1px solid #dddddd;">{{ item.product.name }}</td>
+                <td style="padding: 15px; text-align: left; border-bottom: 1px solid #dddddd;">{{ item.quantity }}</td>
+                <td style="padding: 15px; text-align: left; border-bottom: 1px solid #dddddd;">₹{{ item.product.price }}</td>
+                <td style="padding: 15px; text-align: left; border-bottom: 1px solid #dddddd;">
+                    {% if not item.canceled %}
+                    <form action="{% url 'cancel_order_item' item.id %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="display: inline-block; margin-top: 10px; padding: 10px 20px; border-radius: 10px; color: #ffffff; background-color: #007bff; text-decoration: none; text-align: center; cursor: pointer;">Cancel</button>
+                    </form>
+                    {% else %}
+                    <span>Canceled</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function toggleOrderItems(orderId) {
+        var orderItems = document.getElementById('orderItems' + orderId);
+        orderItems.style.display = orderItems.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+
+{% endblock %}

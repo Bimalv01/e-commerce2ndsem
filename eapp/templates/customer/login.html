@@ -1,0 +1,139 @@
+{% extends 'base2.html' %}
+
+{% block content %}
+{% load static %}
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f4f4;
+    }
+    .main-menu a {
+        color: black !important;
+    }
+    .breadcrumb-area {
+        padding: 60px 0;
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+    }
+    .breadcrumb-text h1 {
+        color: #333;
+        font-size: 36px;
+        margin-bottom: 20px;
+    }
+    .breadcrumb-menu {
+        display: inline-block;
+        background-color: #fff;
+        padding: 10px 20px;
+        border-radius: 5px;
+    }
+    .login-area {
+        background-color: #fff;
+        padding: 60px 0;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    }
+    .basic-login {
+        background-color: #fff;
+        padding: 40px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .basic-login h3 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 40px;
+    }
+    .login-action {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .login-action input[type="checkbox"] {
+        margin-right: 10px;
+    }
+    .btn {
+        display: inline-block;
+        padding: 15px 30px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        transition: background-color 0.3s;
+    }
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    .or-divide {
+        text-align: center;
+        margin: 20px 0;
+    }
+</style>
+<main>
+    <!-- breadcrumb-area-start -->
+    <section class="breadcrumb-area" data-background="img/bg/page-title.png">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="breadcrumb-text text-center">
+                        <!-- <h1>Login</h1> -->
+                        <!-- <ul class="breadcrumb-menu">
+                            <li><a href="index.html">home</a></li>
+                            <li><span>Login</span></li>
+                        </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb-area-end -->
+
+    <!-- login Area Strat-->
+    <section class="login-area pt-100 pb-100">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="basic-login">
+                        <h3 class="text-center mb-60">Login From Here</h3>
+                        <!-- Your Django form starts here -->
+                        <form method="post">
+                            {% csrf_token %}
+                            {% for message in messages %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                            <div class="form-group">
+                                <label for="email">Username:</label>
+                                <input type="text" id="Username" name="username" class="form-control" placeholder="Enter Username or Email address..." required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password:</label>
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Enter password..." required>
+                            </div>
+                            <div class="login-action mb-20">
+                                <span class="log-rem">
+                                    <input id="remember" type="checkbox" name="remember" {% if request.POST.remember %} checked {% endif %}>
+                                    <label for="remember">Remember me!</label>
+                                </span>
+                                <span class="forgot-login">
+                                    <a href="{% url 'forgot_password' %}">Lost your password?</a>
+                                </span>
+                            </div>
+                            <button class="btn w-100" type="submit">Login Now</button>
+                            <div class="or-divide"><span>or</span></div>
+                            <!-- Register button -->
+                            <a href="{% url 'register' %}" class="btn w-100">Register Now</a>
+                        </form>
+                        <!-- Your Django form ends here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- login Area End-->
+</main>
+{% endblock %}

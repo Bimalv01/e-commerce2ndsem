@@ -1,0 +1,156 @@
+{% extends 'base.html' %} {% block content %} {% load static %}
+
+<style>
+  #cart-button {
+    border: none;
+    background-color: #fcfcfc; /* Change color as needed */
+    color: rgb(0, 0, 0);
+    padding: 10px 20px;
+    border-radius: 60%; /* Make it round */
+    font-size: 20px; /* Increase font size */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#cart-button:hover {
+    background-color: #0026ff; /* Darker color on hover */
+}
+
+</style>
+<!-- slider-area start -->
+<section class="slider-area pos-relative">
+  <div class="slider-active">
+    <div
+      class="single-slider slide-1-style slide-height-2 slide-height-4 d-flex align-items-center"
+      data-background="{% static 'img/slider/slide5.jpg' %}"
+      
+    >
+      <!-- <div class="shape-title shape-title-4 bounce-animate">
+        <h2>2024</h2>
+      </div> -->
+      <div class="shape-icon shape-icon-4 bounce-animate">
+        <img src="{% static 'img/slider/shape-icon-2.png' %}" alt="" />
+      </div>
+      <!-- <div class="container">
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="slide-content slide-content-4 text-center pt-40">
+              <h1 data-animation="fadeInUp" data-delay=".3s">New Arrival</h1>
+              <div class="slide-btn">
+                <a
+                  class="btn theme-btn"
+                  href="{% url 'product_list' %}"
+                  data-animation="fadeInLeft"
+                  data-delay=".6s"
+                  >shop now</a
+                >
+                <a
+                  class="btn white-btn"
+                 href="{% url 'product_list' %}"
+                  data-animation="fadeInRight"
+                  data-delay=".9s"
+                  >category</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+    </div>
+    <!-- other slider items go here -->
+  </div>
+</section>
+<!-- slider-area end -->
+
+<!-- banner area start -->
+<!-- <section class="banner-area pt-100 box-90">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6 col-md-12">
+        <div class="banner-2 pos-relative mb-30">
+          <a href="shop.html"
+            ><img src="{% static 'img/banner/banner-2/banner3.jpg' %}" alt=""
+          /></a>
+          <div class="banner-trend">
+            <span>Trendy Item</span>
+            <h2><a href="shop.html">New Year Trend Coming 2019</a></h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12">
+        <div class="banner-2 pos-relative mb-30">
+          <a href="shop.html"
+            ><img src="{% static 'img/banner/banner-2/banner4.jpg' %}" alt=""
+          /></a>
+          <div class="banner-look">
+            <span>Get the look</span>
+            <h2>Festive Looks</h2>
+            <img src="{% static 'img/icon/look.png' %}" alt="" />
+            <p>Your delivery of outfit ideas, updated daily</p>
+            <a href="shop.html" class="btn theme-btn">discover</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+<!-- banner area end -->
+
+<!-- product-area start -->
+<section class="product-area box-90 pt-70 pb-40">
+  <div class="container-fluid">
+    <div class="row">
+      {% for product in products %}
+      <div class="col-lg-3 col-md-4 col-sm-6">
+        <div class="single-product-item">
+          <div class="product-wrapper mb-50">
+            <div class="product-img mb-25">
+              <a href="{% url 'product_detail' product.id %}">
+                <img src="{{ product.image_1.url }}" alt="" />
+                <img
+                  class="secondary-img"
+                  src="{{ product.image_2.url }}"
+                  alt=""
+                />
+              </a>
+              <div class="product-action text-center">
+                <form id="add-to-cart-form" action="{% url 'add_to_cart' %}" method="post">
+                  {% csrf_token %}
+                  <!-- <input type="hidden" name="product_id" value="{{ product.id }}">
+                  <input type="hidden" name="quantity" value="1">
+                  <button type="submit" id="cart-button">
+                      <i>Cart</i>
+                  </button> -->
+              <!-- </form>                           -->
+                <!-- <a href="{% url 'product_detail' product.id %}" title="Quick View">
+                  <i>More</i>
+                </a> -->
+              </div>
+            </div>
+            <div class="product-content">
+              <div class="pro-cat mb-10">
+                <a href="{% url 'product_detail' product.id %}">{{ product.subcategory}}</a>
+            </div>
+              <h3 class="product-title">
+                <a href="{% url 'product_detail' product.id %}">{{ product.name }}</a>
+              </h3>
+              <div class="product-meta">
+                <div class="pro-price">
+                  <span> ₹{{ product.price }}</span>
+                </div>
+                
+              </div>
+              <div class="product-wishlist">
+                <a href="#"><i class="far fa-heart" title="Wishlist"></i></a>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<!-- product-area end -->
+
+{% endblock %}

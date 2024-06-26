@@ -137,7 +137,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 EMAIL_HOST_USER = 'bimalbabu720@gmail.com'
-EMAIL_HOST_PASSWORD = 'jlknqvinypltmzug'
+EMAIL_HOST_PASSWORD = ''
 
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
